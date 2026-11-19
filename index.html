@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreeFLY — 스트레스 없는 여행 계획 세우기</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sand: {
+              canvas: '#E6DEC8',
+              elevated: '#EFE9D8',
+              inset: '#D7CCB0',
+              highlight: '#F6F2E6',
+            },
+            forest: {
+              DEFAULT: '#1E352B',
+              hover: '#15271F',
+              dark: '#14241D',
+              card: '#264135',
+            },
+            terracotta: '#A34313',
+            sage: '#698456',
+            ochre: '#7F633F',
+          },
+          fontFamily: {
+            display: ['"Plus Jakarta Sans"', '"Pretendard"', 'sans-serif'],
+            sans: ['"Pretendard"', '"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --hc-bg-canvas: #E6DEC8;
+      --hc-bg-elevated: #EFE9D8;
+      --hc-bg-inset: #D7CCB0;
+      --hc-text-primary: #1E352B;
+      --hc-text-secondary: rgba(30, 53, 43, 0.80);
+      --hc-text-muted: rgba(30, 53, 43, 0.60);
+      --hc-accent-primary: #1E352B;
+      --hc-accent-fire: #A34313;
+      --hc-accent-sage: #698456;
+      --hc-accent-ochre: #7F633F;
+      --hc-border-hairline: rgba(30, 53, 43, 0.20);
+      --hc-radius-md: 8px;
+      --hc-radius-lg: 12px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Pretendard', 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--hc-bg-canvas);
+      color: var(--hc-text-primary);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    html.dark body {
+      background-color: #1E352B;
+      color: #E6DEC8;
+    }
+
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .active-card-offset {
+      box-shadow: 2px 2px 0px #1E352B;
+    }
+
+    html.dark .active-card-offset {
+      box-shadow: 2px 2px 0px #E6DEC8;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-[#A34313] selection:text-[#EFE9D8]">
+  <!-- Top Sticky Navigation & Section Tabs -->
+  <header class="sticky top-0 z-40 border-b border-[#1E352B]/20 dark:border-[#E6DEC8]/20 bg-[#E6DEC8]/85 dark:bg-[#1E352B]/85 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Identity with 2x2 Pine & Peak Motif -->
+      <a href="#top" class="flex items-center gap-3 group focus:outline-none">
+        <!-- 2x2 Geometric Triangle Motif (12% gap ratio, 53 deg vertex feel) -->
+        <svg class="w-7 h-7 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <!-- Top-Left: Deep Forest (#1E352B) -->
+          <polygon points="7.5,2 1.5,14 13.5,14" fill="#1E352B" class="dark:fill-[#EFE9D8]" />
+          <!-- Top-Right: Burnt Terracotta (#A34313) -->
+          <polygon points="24.5,2 18.5,14 30.5,14" fill="#A34313" />
+          <!-- Bottom-Left: Highland Sage (#698456) -->
+          <polygon points="7.5,18 1.5,30 13.5,30" fill="#698456" />
+          <!-- Bottom-Right: Trail Ochre (#7F633F) -->
+          <polygon points="24.5,18 18.5,30 30.5,30" fill="#7F633F" />
+        </svg>
+        <div class="flex flex-col">
+          <span class="font-display font-bold text-lg sm:text-xl tracking-[-0.025em] leading-none text-[#1E352B] dark:text-[#E6DEC8]">
+            FreeFLY
+          </span>
+          <span class="font-mono-code text-[11px] text-[#7F633F] dark:text-[#E6DEC8]/70 mt-0.5">
+            PRO TRAVELER · NO-STRESS PLANNER
+          </span>
+        </div>
+      </a>
+
+      <!-- Top Sticky Section Tabs (Desktop & Tablet) -->
+      <nav aria-label="주요 섹션" class="hidden md:flex items-center gap-1 p-1 rounded-[10px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+        <a href="#method" data-nav="method" class="nav-pill px-3.5 py-1.5 rounded-[8px] text-sm font-medium text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/60 dark:hover:bg-[#1E352B] transition">
+          기획 방식
+        </a>
+        <a href="#planner-lab" data-nav="planner-lab" class="nav-pill px-3.5 py-1.5 rounded-[8px] text-sm font-medium text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/60 dark:hover:bg-[#1E352B] transition">
+          일정 빌더
+        </a>
+        <a href="#routes" data-nav="routes" class="nav-pill px-3.5 py-1.5 rounded-[8px] text-sm font-medium text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/60 dark:hover:bg-[#1E352B] transition">
+          추천 루트
+        </a>
+        <a href="#contact" data-nav="contact" class="nav-pill px-3.5 py-1.5 rounded-[8px] text-sm font-medium text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/60 dark:hover:bg-[#1E352B] transition">
+          카카오톡 문의
+        </a>
+      </nav>
+
+      <!-- Night Camp Dark Mode Toggle -->
+      <button
+        id="themeToggle"
+        type="button"
+        aria-label="Night Camp 다크 모드 전환"
+        class="px-3 py-2 rounded-[8px] border border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#EFE9D8] dark:bg-[#264135] text-[#1E352B] dark:text-[#E6DEC8] hover:border-[#1E352B] dark:hover:border-[#E6DEC8] text-xs font-medium flex items-center gap-2 transition cursor-pointer"
+      >
+        <span id="themeIcon" aria-hidden="true">☾</span>
+        <span id="themeLabel" class="hidden sm:inline">Night Camp</span>
+      </button>
+    </div>
+
+    <!-- Mobile Scrollable Section Tabs -->
+    <div class="flex md:hidden items-center gap-1.5 overflow-x-auto px-4 py-2 border-t border-[#1E352B]/15 dark:border-[#E6DEC8]/15 bg-[#EFE9D8]/80 dark:bg-[#14241D]/80">
+      <a href="#method" class="shrink-0 px-3 py-1 rounded-[8px] text-xs font-medium bg-[#E6DEC8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">기획 방식</a>
+      <a href="#planner-lab" class="shrink-0 px-3 py-1 rounded-[8px] text-xs font-medium bg-[#E6DEC8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">일정 빌더</a>
+      <a href="#routes" class="shrink-0 px-3 py-1 rounded-[8px] text-xs font-medium bg-[#E6DEC8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">추천 루트</a>
+      <a href="#contact" class="shrink-0 px-3 py-1 rounded-[8px] text-xs font-medium bg-[#E6DEC8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">카카오톡 문의</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-[8px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+            <span class="w-2 h-2 rounded-full bg-[#A34313]"></span>
+            <span class="text-xs sm:text-sm font-medium text-[#1E352B] dark:text-[#E6DEC8]">
+              프로 여행자 · 활동적인 파스텔 여행 큐레이션
+            </span>
+          </div>
+
+          <h1 class="font-display font-bold text-[40px] sm:text-[64px] leading-[1.02] tracking-[-0.035em] text-[#1E352B] dark:text-[#E6DEC8]">
+            스트레스 없는<br />
+            <span class="text-[#A34313] dark:text-[#E07A47]">여행 계획</span> 세우기
+          </h1>
+
+          <p class="text-[18px] sm:text-[22px] leading-[1.45] tracking-[-0.01em] text-[#1E352B]/80 dark:text-[#E6DEC8]/80 max-w-2xl">
+            복잡한 동선표와 빡빡한 체크리스트 대신, 가볍고 활동적인 리듬으로 떠나는 <strong>FreeFLY</strong> 여행 플래닝.
+            프로 여행자의 시선으로 가장 여유롭고 생동감 넘치는 하루를 설계합니다.
+          </p>
+
+          <!-- Action Buttons (Primary, Secondary Outlined, Accent) -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a
+              href="#planner-lab"
+              class="px-5 py-3 rounded-[8px] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B] hover:bg-[#15271F] dark:hover:bg-[#E6DEC8] font-semibold text-sm sm:text-base transition inline-flex items-center gap-2"
+            >
+              <span>일정 빌더 체험하기</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+
+            <a
+              href="#contact"
+              class="px-5 py-3 rounded-[8px] bg-[#A34313] text-[#E6DEC8] hover:bg-[#8A370F] font-semibold text-sm sm:text-base transition inline-flex items-center gap-2"
+            >
+              <span>카카오톡 1:1 상담</span>
+            </a>
+
+            <a
+              href="#routes"
+              class="px-5 py-3 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#EFE9D8] dark:hover:bg-[#264135] font-semibold text-sm sm:text-base transition"
+            >
+              활동 루트 보기
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Editorial Field Card (Layered Surface #EFE9D8 + 1px Hairline Border) -->
+        <div class="lg:col-span-5">
+          <div class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-5 active-card-offset">
+            <div class="flex items-center justify-between border-b border-[#1E352B]/15 dark:border-[#E6DEC8]/15 pb-4">
+              <div>
+                <p class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">FREEFLY FIELD BRIEF</p>
+                <h2 class="font-display font-bold text-xl sm:text-2xl tracking-[-0.02em] mt-1">
+                  오늘의 무스트레스 여행 공식
+                </h2>
+              </div>
+              <span class="px-2.5 py-1 rounded-[8px] bg-[#698456] text-[#EFE9D8] text-xs font-semibold">
+                ACTIVE FLOW
+              </span>
+            </div>
+
+            <ul class="space-y-3.5 text-sm sm:text-base">
+              <li class="flex items-start gap-3 p-3 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15">
+                <span class="font-mono-code text-xs font-bold px-2 py-0.5 rounded bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] mt-0.5">01</span>
+                <div>
+                  <p class="font-semibold">하루 핵심 미션 2개만 고정</p>
+                  <p class="text-xs sm:text-sm text-[#1E352B]/75 dark:text-[#E6DEC8]/75 mt-0.5">
+                    시간표 압박을 줄이고 걷기·바이크·카페 휴식 여백을 확보합니다.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3 p-3 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15">
+                <span class="font-mono-code text-xs font-bold px-2 py-0.5 rounded bg-[#A34313] text-[#EFE9D8] mt-0.5">02</span>
+                <div>
+                  <p class="font-semibold">날씨·컨디션 플랜 B 자동 준비</p>
+                  <p class="text-xs sm:text-sm text-[#1E352B]/75 dark:text-[#E6DEC8]/75 mt-0.5">
+                    예상치 못한 변수에도 당황하지 않도록 대체 스팟을 미리 연결합니다.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3 p-3 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15">
+                <span class="font-mono-code text-xs font-bold px-2 py-0.5 rounded bg-[#698456] text-[#EFE9D8] mt-0.5">03</span>
+                <div>
+                  <p class="font-semibold">카카오톡으로 바로 공유 &amp; 조율</p>
+                  <p class="text-xs sm:text-sm text-[#1E352B]/75 dark:text-[#E6DEC8]/75 mt-0.5">
+                    동행자와 복잡한 시트 대신 메시지로 가볍게 일정을 확정합니다.
+                  </p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="pt-2 flex items-center justify-between text-xs text-[#1E352B]/70 dark:text-[#E6DEC8]/70 font-mono-code">
+              <span>TEL: 010-0000-1234</span>
+              <span>KAKAO READY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Method & Philosophy (Segmented Camp Tabs) -->
+    <section id="method" class="py-16 sm:py-24 border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div class="space-y-2">
+            <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">
+              01 · WHY FREEFLY
+            </p>
+            <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">
+              왜 여행 계획이 스트레스가 될까요?
+            </h2>
+          </div>
+
+          <!-- Segmented Camp Tabs (#E6DEC8 container with 4px padding) -->
+          <div
+            role="tablist"
+            aria-label="여행 철학 탭 전환"
+            class="inline-flex p-1 rounded-[10px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 self-start"
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              data-tab="philosophy"
+              class="camp-tab px-4 py-2 rounded-[8px] text-xs sm:text-sm font-semibold bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] transition cursor-pointer"
+            >
+              여백의 리듬
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-tab="active"
+              class="camp-tab px-4 py-2 rounded-[8px] text-xs sm:text-sm font-semibold text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/50 dark:hover:bg-[#1E352B] transition cursor-pointer"
+            >
+              활동적 스타일
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-tab="process"
+              class="camp-tab px-4 py-2 rounded-[8px] text-xs sm:text-sm font-semibold text-[#1E352B] dark:text-[#E6DEC8] hover:bg-[#D7CCB0]/50 dark:hover:bg-[#1E352B] transition cursor-pointer"
+            >
+              프로 여행자 노하우
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Content Panels -->
+        <div id="tab-philosophy" class="camp-panel grid grid-cols-1 md:grid-cols-3 gap-6">
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-[6px] bg-[#698456] text-[#EFE9D8] text-xs font-semibold">PACE 01</span>
+              <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">FLEXIBLE</span>
+            </div>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3] tracking-[-0.02em]">
+              분 단위 일정표 대신 시간대 블록
+            </h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              “09:15 탑승, 10:05 이동” 같은 촘촘한 스케줄은 여행을 출근처럼 느끼게 만듭니다. 오전·오후·저녁의 큰 호흡만으로 자유를 남깁니다.
+            </p>
+          </article>
+
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-[6px] bg-[#698456] text-[#EFE9D8] text-xs font-semibold">PACE 02</span>
+              <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">LIGHTWEIGHT</span>
+            </div>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3] tracking-[-0.02em]">
+              필수 예약만 먼저, 나머지는 현장 감각
+            </h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              숙소와 핵심 이동 수단만 미리 챙기고, 골목 산책과 로컬 맛집은 그날의 바람과 기분에 따라 경쾌하게 선택합니다.
+            </p>
+          </article>
+
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-[6px] bg-[#698456] text-[#EFE9D8] text-xs font-semibold">PACE 03</span>
+              <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">CALM MIND</span>
+            </div>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3] tracking-[-0.02em]">
+              누락 없는 사전 체크리스트
+            </h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              공항에서 허둥대지 않도록 출발 전 꼭 필요한 준비물과 동선 포인트를 깔끔하게 정리해 마음의 여유를 지켜드립니다.
+            </p>
+          </article>
+        </div>
+
+        <div id="tab-active" class="camp-panel hidden grid-cols-1 md:grid-cols-3 gap-6">
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <span class="inline-block px-2.5 py-0.5 rounded-[6px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">MORNING WALK</span>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">상쾌한 아침 해안·능선 산책</h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              사람이 붐비기 전 이른 시간, 가벼운 트레킹이나 러닝으로 여행지의 공기를 가장 먼저 마주하는 활동적인 루트를 제안합니다.
+            </p>
+          </article>
+
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <span class="inline-block px-2.5 py-0.5 rounded-[6px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">BICYCLE &amp; SCOOTER</span>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">자전거·도보 중심의 생생한 이동</h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              차창 너머로 스쳐 지나가는 풍경 대신 발과 바퀴가 닿는 거리만큼 여행지를 깊이 경험하도록 동선을 짭니다.
+            </p>
+          </article>
+
+          <article class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-3">
+            <span class="inline-block px-2.5 py-0.5 rounded-[6px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">SOFT PASTEL VIBE</span>
+            <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">부드러운 색감과 기분 좋은 에너지</h3>
+            <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+              과열된 관광지 경쟁보다 밝고 산뜻한 분위기 속에서 친구·연인·혼자서도 부담 없이 즐길 수 있는 스팟을 골라냅니다.
+            </p>
+          </article>
+        </div>
+
+        <div id="tab-process" class="camp-panel hidden rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1E352B]/15 dark:border-[#E6DEC8]/15 pb-4">
+            <h3 class="font-display font-bold text-xl sm:text-2xl">프로 여행자의 3단계 플래닝 프로세스</h3>
+            <span class="font-mono-code text-xs text-[#698456] dark:text-[#96B87E]">STEP-BY-STEP FLOW</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-2">
+              <p class="font-mono-code text-xs text-[#A34313] dark:text-[#E07A47]">STEP 01 · 취향 파악</p>
+              <p class="font-semibold text-base">여행 기간·동행·활동 강도 공유</p>
+              <p class="text-sm text-[#1E352B]/80 dark:text-[#E6DEC8]/80">카카오톡으로 원하는 분위기와 피하고 싶은 요소만 편하게 알려주세요.</p>
+            </div>
+            <div class="space-y-2">
+              <p class="font-mono-code text-xs text-[#A34313] dark:text-[#E07A47]">STEP 02 · 초안 설계</p>
+              <p class="font-semibold text-base">이동 피로를 줄인 여백형 일정표</p>
+              <p class="text-sm text-[#1E352B]/80 dark:text-[#E6DEC8]/80">동선 꼬임을 없애고 핵심 포인트와 대안 코스를 함께 제안합니다.</p>
+            </div>
+            <div class="space-y-2">
+              <p class="font-mono-code text-xs text-[#A34313] dark:text-[#E07A47]">STEP 03 · 가벼운 출발</p>
+              <p class="font-semibold text-base">현장에서 바로 꺼내 쓰는 요약본</p>
+              <p class="text-sm text-[#1E352B]/80 dark:text-[#E6DEC8]/80">복잡한 문서 대신 한눈에 들어오는 요약 가이드를 제공합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Interactive Stress-Free Itinerary Builder -->
+    <section id="planner-lab" class="py-16 sm:py-24 border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
+        <div class="space-y-2">
+          <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">
+            02 · INTERACTIVE PLANNER LAB
+          </p>
+          <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">
+            나만의 무스트레스 여행 초안 만들기
+          </h2>
+          <p class="text-sm sm:text-base text-[#1E352B]/80 dark:text-[#E6DEC8]/80 max-w-2xl">
+            여행 스타일과 일정을 선택하면 스트레스 지수를 낮춘 추천 일정 초안이 바로 구성됩니다. 복사해서 카카오톡 문의에 붙여넣어 보세요.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Left Controls Panel -->
+          <div class="lg:col-span-5 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-5">
+            <div>
+              <label for="destinationSelect" class="block text-sm font-semibold mb-2">여행지 테마 선택</label>
+              <select
+                id="destinationSelect"
+                class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:border-[#1E352B] dark:focus:border-[#EFE9D8] focus:outline-none text-sm"
+              >
+                <option value="jeju">제주 해안 &amp; 오름 활동 코스</option>
+                <option value="gangneung">강릉 솔향기 자전거 &amp; 카페 산책</option>
+                <option value="tokyo">도쿄 시모키타자와·공원 도보 투어</option>
+                <option value="kyoto">교토 카모가와 강변 &amp; 골목 여유 코스</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="daysRange" class="flex items-center justify-between text-sm font-semibold mb-2">
+                <span>여행 일수</span>
+                <span id="daysValue" class="font-mono-code text-[#A34313] dark:text-[#E07A47]">3일 (2박 3일)</span>
+              </label>
+              <input
+                id="daysRange"
+                type="range"
+                min="2"
+                max="5"
+                value="3"
+                class="w-full accent-[#A34313] cursor-pointer"
+              />
+            </div>
+
+            <div>
+              <span class="block text-sm font-semibold mb-2">선호하는 활동 리듬</span>
+              <div class="grid grid-cols-3 gap-2" id="paceOptions">
+                <button
+                  type="button"
+                  data-pace="산책 중심"
+                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] text-xs font-semibold transition cursor-pointer"
+                >
+                  산책 중심
+                </button>
+                <button
+                  type="button"
+                  data-pace="액티비티"
+                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#E6DEC8] dark:bg-[#1E352B] text-xs font-semibold transition cursor-pointer"
+                >
+                  액티비티
+                </button>
+                <button
+                  type="button"
+                  data-pace="여유 반반"
+                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#E6DEC8] dark:bg-[#1E352B] text-xs font-semibold transition cursor-pointer"
+                >
+                  여유 반반
+                </button>
+              </div>
+            </div>
+
+            <!-- Stress Gauge Progress Bar (#698456 Sage) -->
+            <div class="p-3.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 space-y-2">
+              <div class="flex items-center justify-between text-xs font-mono-code">
+                <span>PLANNING RELAX SCORE</span>
+                <span id="relaxScoreText" class="text-[#698456] dark:text-[#96B87E] font-bold">92% LOW STRESS</span>
+              </div>
+              <div class="w-full h-2.5 rounded-full bg-[#D7CCB0] dark:bg-[#14241D] overflow-hidden">
+                <div id="relaxProgressBar" class="h-full bg-[#698456] transition-all duration-300" style="width: 92%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5 pt-1">
+              <button
+                id="generatePlanBtn"
+                type="button"
+                class="flex-1 px-4 py-2.5 rounded-[8px] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B] hover:bg-[#15271F] text-sm font-semibold transition cursor-pointer"
+              >
+                초안 생성하기
+              </button>
+              <button
+                id="copyPlanBtn"
+                type="button"
+                class="px-4 py-2.5 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] text-sm font-semibold hover:bg-[#E6DEC8] dark:hover:bg-[#1E352B] transition cursor-pointer"
+              >
+                요약 복사
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Generated Plan Output -->
+          <div class="lg:col-span-7 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-4 active-card-offset">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#1E352B]/15 dark:border-[#E6DEC8]/15 pb-3">
+              <div>
+                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">GENERATED DRAFT</span>
+                <h3 id="planTitle" class="font-display font-bold text-xl sm:text-2xl mt-0.5">
+                  제주 해안 &amp; 오름 활동 코스 · 3일
+                </h3>
+              </div>
+              <span id="planBadge" class="px-3 py-1 rounded-[8px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">
+                산책 중심
+              </span>
+            </div>
+
+            <div id="planDaysContainer" class="space-y-3">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Callout Banner (#A34313 left accent border) -->
+            <div class="rounded-[8px] border-l-4 border-[#A34313] bg-[#A34313]/10 dark:bg-[#A34313]/20 p-3.5 text-xs sm:text-sm leading-relaxed">
+              <strong class="font-semibold text-[#A34313] dark:text-[#F09A6C]">프로 여행자 팁:</strong>
+              비나 바람이 부는 날에는 야외 코스를 실내 북카페·전시 공간으로 1:1 치환할 수 있도록 여유 시간을 비워 두었습니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Curated Active Routes with Triangle Difficulty System -->
+    <section id="routes" class="py-16 sm:py-24 border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="space-y-2">
+            <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">
+              03 · CURATED ROUTES &amp; DIFFICULTY
+            </p>
+            <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">
+              기분과 체력에 맞추는 활동 루트
+            </h2>
+          </div>
+
+          <!-- Editorial Underline Filter Tabs -->
+          <div class="flex items-center gap-5 border-b border-[#1E352B]/20 dark:border-[#E6DEC8]/20" id="routeFilterTabs">
+            <button
+              type="button"
+              data-filter="all"
+              class="route-filter pb-2.5 text-sm font-semibold border-b-2 border-[#A34313] text-[#1E352B] dark:text-[#E6DEC8] transition cursor-pointer"
+            >
+              전체 보기
+            </button>
+            <button
+              type="button"
+              data-filter="Basecamp"
+              class="route-filter pb-2.5 text-sm font-medium border-b-2 border-transparent text-[#1E352B]/65 dark:text-[#E6DEC8]/65 hover:text-[#1E352B] dark:hover:text-[#E6DEC8] transition cursor-pointer"
+            >
+              Basecamp
+            </button>
+            <button
+              type="button"
+              data-filter="Ridge"
+              class="route-filter pb-2.5 text-sm font-medium border-b-2 border-transparent text-[#1E352B]/65 dark:text-[#E6DEC8]/65 hover:text-[#1E352B] dark:hover:text-[#E6DEC8] transition cursor-pointer"
+            >
+              Ridge
+            </button>
+            <button
+              type="button"
+              data-filter="Summit"
+              class="route-filter pb-2.5 text-sm font-medium border-b-2 border-transparent text-[#1E352B]/65 dark:text-[#E6DEC8]/65 hover:text-[#1E352B] dark:hover:text-[#E6DEC8] transition cursor-pointer"
+            >
+              Summit
+            </button>
+          </div>
+        </div>
+
+        <div id="routesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card 1: Basecamp (Single Sage Triangle) -->
+          <article data-level="Basecamp" class="route-card rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 flex flex-col justify-between space-y-5">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="inline-flex items-center gap-2">
+                  <!-- Basecamp Icon: Single Sage Triangle (#698456) -->
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polygon points="12,3 2,20 22,20" fill="#698456" />
+                  </svg>
+                  <span class="font-mono-code text-xs font-semibold text-[#698456] dark:text-[#96B87E]">
+                    BASECAMP · 입문
+                  </span>
+                </div>
+                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">도보 ~5km</span>
+              </div>
+
+              <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">
+                햇살 머금은 해변 산책 &amp; 브런치
+              </h3>
+              <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+                이동 부담을 최소화하고 파스텔톤 바다와 산책로, 감각적인 카페를 느긋하게 연결하는 첫날 추천 코스입니다.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex items-center justify-between text-xs">
+              <span class="font-mono-code text-[#1E352B]/70 dark:text-[#E6DEC8]/70">스트레스 지수: 매우 낮음</span>
+              <button type="button" data-preset="jeju" class="preset-load font-semibold text-[#A34313] dark:text-[#E07A47] hover:underline cursor-pointer">
+                빌더에 불러오기 →
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 2: Ridge (Overlapping Ochre & Forest Ridge) -->
+          <article data-level="Ridge" class="route-card rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 flex flex-col justify-between space-y-5">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="inline-flex items-center gap-2">
+                  <!-- Ridge Icon: Overlapping Ochre (#7F633F) & Forest (#1E352B) -->
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polygon points="8,5 1,19 15,19" fill="#7F633F" />
+                    <polygon points="15,7 7,20 23,20" fill="#1E352B" class="dark:fill-[#EFE9D8]" />
+                  </svg>
+                  <span class="font-mono-code text-xs font-semibold text-[#7F633F] dark:text-[#D5B285]">
+                    RIDGE · 중급
+                  </span>
+                </div>
+                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">자전거·트레일 ~12km</span>
+              </div>
+
+              <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">
+                바람을 가르는 자전거 &amp; 언덕 뷰포인트
+              </h3>
+              <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+                가벼운 라이딩과 언덕 산책으로 적당한 땀을 흘린 뒤, 시원한 음료와 휴식 스팟으로 마무리하는 활동적 코스입니다.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex items-center justify-between text-xs">
+              <span class="font-mono-code text-[#1E352B]/70 dark:text-[#E6DEC8]/70">스트레스 지수: 낮음</span>
+              <button type="button" data-preset="gangneung" class="preset-load font-semibold text-[#A34313] dark:text-[#E07A47] hover:underline cursor-pointer">
+                빌더에 불러오기 →
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 3: Summit (Forest Peak with Terracotta Core) -->
+          <article data-level="Summit" class="route-card rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 flex flex-col justify-between space-y-5">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="inline-flex items-center gap-2">
+                  <!-- Summit Icon: Forest Peak (#1E352B) + Terracotta Core (#A34313) -->
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polygon points="12,2 2,20 22,20" fill="#1E352B" class="dark:fill-[#EFE9D8]" />
+                    <polygon points="12,10 7.5,19 16.5,19" fill="#A34313" />
+                  </svg>
+                  <span class="font-mono-code text-xs font-semibold text-[#A34313] dark:text-[#E07A47]">
+                    SUMMIT · 심화
+                  </span>
+                </div>
+                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">풀데이 익스플로어</span>
+              </div>
+
+              <h3 class="font-display font-bold text-[20px] sm:text-[24px] leading-[1.3]">
+                다채로운 동네 탐험 &amp; 노을 스팟 릴레이
+              </h3>
+              <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+                여러 개성 있는 동네를 도보와 대중교통으로 넘나들며 하루 종일 생동감 있게 채우되, 피로 누적 구간을 정교하게 조절합니다.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex items-center justify-between text-xs">
+              <span class="font-mono-code text-[#1E352B]/70 dark:text-[#E6DEC8]/70">스트레스 지수: 맞춤 완충</span>
+              <button type="button" data-preset="tokyo" class="preset-load font-semibold text-[#A34313] dark:text-[#E07A47] hover:underline cursor-pointer">
+                빌더에 불러오기 →
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Contact via KakaoTalk & Phone -->
+    <section id="contact" class="py-16 sm:py-24 border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Left Contact Info -->
+          <div class="lg:col-span-5 space-y-5">
+            <div class="space-y-2">
+              <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">
+                04 · KAKAO TALK &amp; DIRECT
+              </p>
+              <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">
+                카카오톡으로 편하게 연락주세요
+              </h2>
+              <p class="text-sm sm:text-base leading-[1.65] text-[#1E352B]/80 dark:text-[#E6DEC8]/80">
+                어려운 양식 없이 카카오톡 메시지로 여행 시기와 원하는 분위기를 남겨주시면, 스트레스 없는 여행 계획을 함께 세워드립니다.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="p-4 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex items-center justify-between gap-3">
+                <div>
+                  <p class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">PRIMARY CHANNEL</p>
+                  <p class="font-bold text-base mt-0.5">카카오톡 채널 · FreeFLY</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-[6px] bg-[#698456] text-[#EFE9D8] text-xs font-semibold">
+                  추천 연락처
+                </span>
+              </div>
+
+              <div class="p-4 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex items-center justify-between gap-3">
+                <div>
+                  <p class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">DIRECT CONTACT</p>
+                  <p id="phoneNumberText" class="font-mono-code font-bold text-base mt-0.5">010-0000-1234</p>
+                </div>
+                <button
+                  id="copyPhoneBtn"
+                  type="button"
+                  class="px-3 py-1.5 rounded-[8px] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 hover:border-[#1E352B] dark:hover:border-[#E6DEC8] text-xs font-semibold transition cursor-pointer"
+                >
+                  번호 복사
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Quick Kakao Message Composer -->
+          <form id="kakaoInquiryForm" class="lg:col-span-7 rounded-[12px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-display font-bold text-lg sm:text-xl">카카오톡 문의 메시지 작성기</h3>
+              <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">KAKAO READY</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="senderName" class="block text-xs sm:text-sm font-semibold mb-1.5">이름 또는 닉네임</label>
+                <input
+                  id="senderName"
+                  type="text"
+                  placeholder="예: 하늘 / 김여행"
+                  class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:border-[#1E352B] dark:focus:border-[#EFE9D8] focus:outline-none text-sm"
+                />
+              </div>
+              <div>
+                <label for="travelSeason" class="block text-xs sm:text-sm font-semibold mb-1.5">희망 시기 · 기간</label>
+                <input
+                  id="travelSeason"
+                  type="text"
+                  placeholder="예: 다음 달 2박 3일"
+                  class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:border-[#1E352B] dark:focus:border-[#EFE9D8] focus:outline-none text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="inquiryMessage" class="block text-xs sm:text-sm font-semibold mb-1.5">원하는 여행 분위기 &amp; 활동</label>
+              <textarea
+                id="inquiryMessage"
+                rows="3"
+                placeholder="예: 부드럽고 산뜻한 분위기로 걷기 좋은 코스 위주, 빡빡하지 않게 계획하고 싶어요."
+                class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:border-[#1E352B] dark:focus:border-[#EFE9D8] focus:outline-none text-sm"
+              ></textarea>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <p class="text-xs text-[#1E352B]/70 dark:text-[#E6DEC8]/70">
+                작성한 내용을 복사해 카카오톡(010-0000-1234)으로 바로 전송할 수 있습니다.
+              </p>
+              <button
+                type="submit"
+                class="px-5 py-2.5 rounded-[8px] bg-[#A34313] text-[#E6DEC8] hover:bg-[#8A370F] text-sm font-semibold transition cursor-pointer"
+              >
+                카카오톡용 메시지 복사
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20 py-10 bg-[#EFE9D8]/60 dark:bg-[#14241D]/60">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs sm:text-sm text-[#1E352B]/75 dark:text-[#E6DEC8]/75">
+      <div class="flex items-center gap-2.5">
+        <span class="font-display font-bold text-base text-[#1E352B] dark:text-[#E6DEC8]">FreeFLY</span>
+        <span>·</span>
+        <span>프로 여행자의 스트레스 없는 여행 계획 세우기</span>
+      </div>
+      <div class="font-mono-code text-xs flex flex-wrap items-center gap-4">
+        <span>KAKAO TALK</span>
+        <span>010-0000-1234</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Message Box (Replaces alert()) -->
+  <div
+    id="toastBox"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 right-5 z-50 max-w-sm px-4 py-3 rounded-[8px] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B] border border-[#A34313] text-xs sm:text-sm font-medium shadow-none opacity-0 pointer-events-none translate-y-2 transition-all duration-200 active-card-offset"
+  >
+    안내 메시지
+  </div>
+
+  <script>
+    /**
+     * FreeFLY Interactive Planner & UI Controller
+     * Handles Night Camp dark mode, segmented tabs, itinerary generator,
+     * difficulty filters, clipboard copy (execCommand fallback), and toast feedback.
+     */
+    (function () {
+      const htmlEl = document.documentElement;
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeLabel = document.getElementById('themeLabel');
+      const toastBox = document.getElementById('toastBox');
+      let toastTimer = null;
+
+      function showToast(message) {
+        if (!toastBox) return;
+        toastBox.textContent = message;
+        toastBox.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+        toastBox.classList.add('opacity-100', 'translate-y-0');
+
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastBox.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+          toastBox.classList.remove('opacity-100', 'translate-y-0');
+        }, 2600);
+      }
+
+      // Clipboard helper compatible with restricted iframe environments
+      function copyTextToClipboard(text, successMsg) {
+        try {
+          const tempTextarea = document.createElement('textarea');
+          tempTextarea.value = text;
+          tempTextarea.setAttribute('readonly', '');
+          tempTextarea.style.position = 'fixed';
+          tempTextarea.style.left = '-9999px';
+          document.body.appendChild(tempTextarea);
+          tempTextarea.select();
+          const copied = document.execCommand('copy');
+          document.body.removeChild(tempTextarea);
+
+          if (copied) {
+            showToast(successMsg);
+          } else {
+            showToast('복사에 실패했습니다. 직접 선택해 복사해 주세요.');
+          }
+        } catch (err) {
+          showToast('클립보드 접근 중 문제가 발생했습니다.');
+        }
+      }
+
+      // Night Camp Dark Mode Toggle
+      function syncThemeUI(isDark) {
+        if (isDark) {
+          htmlEl.classList.add('dark');
+          themeIcon.textContent = '☀';
+          themeLabel.textContent = 'Warm Sand';
+        } else {
+          htmlEl.classList.remove('dark');
+          themeIcon.textContent = '☾';
+          themeLabel.textContent = 'Night Camp';
+        }
+      }
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      syncThemeUI(prefersDark);
+
+      themeToggle.addEventListener('click', function () {
+        const nextDark = !htmlEl.classList.contains('dark');
+        syncThemeUI(nextDark);
+        showToast(nextDark ? 'Night Camp 다크 모드로 전환했습니다.' : 'Warm Sand 라이트 모드로 전환했습니다.');
+      });
+
+      // Segmented Camp Tabs (#method)
+      const campTabs = document.querySelectorAll('.camp-tab');
+      const campPanels = document.querySelectorAll('.camp-panel');
+
+      campTabs.forEach((tab) => {
+        tab.addEventListener('click', function () {
+          const targetId = 'tab-' + tab.getAttribute('data-tab');
+
+          campTabs.forEach((t) => {
+            t.setAttribute('aria-selected', 'false');
+            t.classList.remove('bg-[#1E352B]', 'text-[#E6DEC8]', 'dark:bg-[#EFE9D8]', 'dark:text-[#1E352B]');
+            t.classList.add('text-[#1E352B]', 'dark:text-[#E6DEC8]');
+          });
+
+          tab.setAttribute('aria-selected', 'true');
+          tab.classList.add('bg-[#1E352B]', 'text-[#E6DEC8]', 'dark:bg-[#EFE9D8]', 'dark:text-[#1E352B]');
+
+          campPanels.forEach((panel) => {
+            panel.classList.toggle('hidden', panel.id !== targetId);
+          });
+        });
+      });
+
+      // Route Difficulty Filter Tabs (#routes)
+      const routeFilters = document.querySelectorAll('.route-filter');
+      const routeCards = document.querySelectorAll('.route-card');
+
+      routeFilters.forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const level = btn.getAttribute('data-filter');
+
+          routeFilters.forEach((b) => {
+            const active = b === btn;
+            b.classList.toggle('border-[#A34313]', active);
+            b.classList.toggle('border-transparent', !active);
+            b.classList.toggle('font-semibold', active);
+            b.classList.toggle('font-medium', !active);
+            b.classList.toggle('text-[#1E352B]/65', !active);
+            b.classList.toggle('dark:text-[#E6DEC8]/65', !active);
+          });
+
+          routeCards.forEach((card) => {
+            const cardLevel = card.getAttribute('data-level');
+            const shouldShow = level === 'all' || cardLevel === level;
+            card.classList.toggle('hidden', !shouldShow);
+          });
+        });
+      });
+
+      // Itinerary Builder Logic (#planner-lab)
+      const destinationSelect = document.getElementById('destinationSelect');
+      const daysRange = document.getElementById('daysRange');
+      const daysValue = document.getElementById('daysValue');
+      const paceButtons = document.querySelectorAll('.pace-btn');
+      const generatePlanBtn = document.getElementById('generatePlanBtn');
+      const copyPlanBtn = document.getElementById('copyPlanBtn');
+      const planTitle = document.getElementById('planTitle');
+      const planBadge = document.getElementById('planBadge');
+      const planDaysContainer = document.getElementById('planDaysContainer');
+      const relaxScoreText = document.getElementById('relaxScoreText');
+      const relaxProgressBar = document.getElementById('relaxProgressBar');
+
+      let selectedPace = '산책 중심';
+
+      const routeTemplates = {
+        jeju: {
+          label: '제주 해안 & 오름 활동 코스',
+          items: [
+            '오전: 파스텔 해변 산책 & 로컬 베이커리 커피 · 오후: 완만한 오름 트레킹 & 쉼표 타임',
+            '오전: 동쪽 해안길 자전거/도보 이동 · 오후: 감각적인 편집샵 구경 & 저녁 자유 시간',
+            '오전: 조용한 포구 산책 & 바다 바라보기 · 오후: 공항 이동 전 여유로운 티타임',
+            '오전: 숲길 가벼운 워킹 · 오후: 해안 드라이브 & 노을 스팟 휴식',
+            '오전: 남은 스팟 가볍게 둘러보기 · 오후: 스트레스 없이 귀가 준비',
+          ],
+        },
+        gangneung: {
+          label: '강릉 솔향기 자전거 & 카페 산책',
+          items: [
+            '오전: 솔숲 산책로 호흡 고르기 · 오후: 바다 앞 테라스 휴식 & 산책',
+            '오전: 해안 자전거 코스 주행 · 오후: 로컬 식사 & 골목 여유 탐방',
+            '오전: 아침 바닷가 산책 · 오후: 기념품 산책 후 여유로운 복귀',
+            '오전: 호수 둘레길 걷기 · 오후: 아늑한 공간에서 독서 및 휴식',
+            '오전: 가벼운 산책 마무리 · 오후: 여유로운 일정으로 귀가',
+          ],
+        },
+        tokyo: {
+          label: '도쿄 시모키타자와·공원 도보 투어',
+          items: [
+            '오전: 공원 산책으로 아침 여백 확보 · 오후: 시모키타자와 골목 & 빈티지 샵 산책',
+            '오전: 조용한 주택가 도보 이동 · 오후: 루프탑/카페 휴식 & 저녁 자유 선택',
+            '오전: 가벼운 쇼핑 & 산책 · 오후: 공항 이동 전 여유로운 시간',
+            '오전: 강변 또는 공원 러닝/워킹 · 오후: 감각적인 스팟 1~2곳만 집중 탐방',
+            '오전: 마지막 산책 & 커피 · 오후: 무리 없는 귀국 동선',
+          ],
+        },
+        kyoto: {
+          label: '교토 카모가와 강변 & 골목 여유 코스',
+          items: [
+            '오전: 카모가와 강변 아침 산책 · 오후: 한적한 골목길 도보 & 다과 휴식',
+            '오전: 이른 시간 사찰/정원 산책 · 오후: 자전거 또는 도보로 주변 동네 탐방',
+            '오전: 여유로운 아침 식사 후 산책 · 오후: 편안한 이동 스케줄',
+            '오전: 강변 바람 쐬며 걷기 · 오후: 골목 서점·카페에서 쉼표',
+            '오전: 가벼운 마무리 산책 · 오후: 여유롭게 다음 여정 이동',
+          ],
+        },
+      };
+
+      paceButtons.forEach((btn) => {
+        btn.addEventListener('click', function () {
+          selectedPace = btn.getAttribute('data-pace');
+          paceButtons.forEach((b) => {
+            const isSelected = b === btn;
+            b.classList.toggle('bg-[#1E352B]', isSelected);
+            b.classList.toggle('text-[#E6DEC8]', isSelected);
+            b.classList.toggle('dark:bg-[#EFE9D8]', isSelected);
+            b.classList.toggle('dark:text-[#1E352B]', isSelected);
+            b.classList.toggle('border-[#1E352B]', isSelected);
+            b.classList.toggle('dark:border-[#E6DEC8]', isSelected);
+
+            b.classList.toggle('bg-[#E6DEC8]', !isSelected);
+            b.classList.toggle('dark:bg-[#1E352B]', !isSelected);
+            b.classList.toggle('border-[#1E352B]/25', !isSelected);
+            b.classList.toggle('dark:border-[#E6DEC8]/25', !isSelected);
+          });
+          renderItinerary(false);
+        });
+      });
+
+      daysRange.addEventListener('input', function () {
+        const d = Number(daysRange.value);
+        daysValue.textContent = `${d}일 (${d - 1}박 ${d}일)`;
+        renderItinerary(false);
+      });
+
+      destinationSelect.addEventListener('change', function () {
+        renderItinerary(false);
+      });
+
+      function renderItinerary(notify) {
+        const destKey = destinationSelect.value;
+        const daysCount = Number(daysRange.value);
+        const template = routeTemplates[destKey] || routeTemplates.jeju;
+
+        planTitle.textContent = `${template.label} · ${daysCount}일`;
+        planBadge.textContent = selectedPace;
+
+        // Calculate relax score based on days & pace
+        let score = 92;
+        if (selectedPace === '산책 중심') score = 95;
+        else if (selectedPace === '여유 반반') score = 90;
+        else if (selectedPace === '액티비티') score = 86;
+        if (daysCount >= 4) score = Math.min(98, score + 2);
+
+        relaxScoreText.textContent = `${score}% LOW STRESS`;
+        relaxProgressBar.style.width = `${score}%`;
+
+        planDaysContainer.innerHTML = '';
+        for (let i = 0; i < daysCount; i++) {
+          const desc = template.items[i % template.items.length];
+          const dayCard = document.createElement('div');
+          dayCard.className =
+            'p-3.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4';
+          dayCard.innerHTML = `
+            <span class="font-mono-code text-xs font-bold px-2.5 py-1 rounded-[6px] bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] shrink-0 self-start sm:self-center">
+              DAY 0${i + 1}
+            </span>
+            <p class="text-xs sm:text-sm leading-relaxed text-[#1E352B] dark:text-[#E6DEC8]">
+              <strong class="font-semibold">[${selectedPace}]</strong> ${desc}
+            </p>
+          `;
+          planDaysContainer.appendChild(dayCard);
+        }
+
+        if (notify) {
+          showToast(`${template.label} (${daysCount}일) 초안을 생성했습니다.`);
+        }
+      }
+
+      generatePlanBtn.addEventListener('click', function () {
+        renderItinerary(true);
+      });
+
+      // Preset buttons inside Route cards
+      document.querySelectorAll('.preset-load').forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const preset = btn.getAttribute('data-preset');
+          if (preset && routeTemplates[preset]) {
+            destinationSelect.value = preset;
+            renderItinerary(true);
+            document.getElementById('planner-lab').scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      function buildPlainItineraryText() {
+        const destKey = destinationSelect.value;
+        const daysCount = Number(daysRange.value);
+        const template = routeTemplates[destKey] || routeTemplates.jeju;
+        const lines = [
+          `[FreeFLY 무스트레스 여행 초안]`,
+          `여행지: ${template.label} (${daysCount}일)`,
+          `활동 리듬: ${selectedPace}`,
+          ``,
+        ];
+        for (let i = 0; i < daysCount; i++) {
+          lines.push(`DAY 0${i + 1}: ${template.items[i % template.items.length]}`);
+        }
+        lines.push(``, `문의: 카카오톡 / 010-0000-1234`);
+        return lines.join('\n');
+      }
+
+      copyPlanBtn.addEventListener('click', function () {
+        copyTextToClipboard(buildPlainItineraryText(), '여행 초안이 클립보드에 복사되었습니다.');
+      });
+
+      // Phone Number Copy & Kakao Form
+      const copyPhoneBtn = document.getElementById('copyPhoneBtn');
+      copyPhoneBtn.addEventListener('click', function () {
+        copyTextToClipboard('010-0000-1234', '연락처 010-0000-1234가 복사되었습니다.');
+      });
+
+      const kakaoInquiryForm = document.getElementById('kakaoInquiryForm');
+      kakaoInquiryForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const name = document.getElementById('senderName').value.trim() || '여행자';
+        const season = document.getElementById('travelSeason').value.trim() || '일정 협의 중';
+        const message =
+          document.getElementById('inquiryMessage').value.trim() ||
+          '스트레스 없는 활동적인 여행 계획을 세우고 싶어요.';
+
+        const kakaoMsg = [
+          `안녕하세요 FreeFLY! 여행 계획 문의드립니다.`,
+          `- 이름: ${name}`,
+          `- 희망 시기/기간: ${season}`,
+          `- 요청 내용: ${message}`,
+        ].join('\n');
+
+        copyTextToClipboard(
+          kakaoMsg,
+          '카카오톡 전송용 메시지가 복사되었습니다. 카카오톡에 붙여넣어 보내주세요!'
+        );
+      });
+
+      // Initial Render
+      renderItinerary(false);
+    })();
+  </script>
+</body>
+</html>
