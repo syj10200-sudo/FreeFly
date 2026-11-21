@@ -401,129 +401,131 @@
     </section>
 
     <!-- Section 2: Interactive Stress-Free Itinerary Builder -->
+
     <section id="planner-lab" class="py-16 sm:py-24 border-t border-[#1E352B]/20 dark:border-[#E6DEC8]/20">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div class="space-y-2">
-          <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">
-            02 · INTERACTIVE PLANNER LAB
-          </p>
-          <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">
-            나만의 무스트레스 여행 초안 만들기
-          </h2>
+          <p class="font-mono-code text-xs sm:text-sm text-[#A34313] dark:text-[#E07A47] uppercase tracking-wider">02 · AI TRAVEL PLANNER</p>
+          <h2 class="font-display font-bold text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.025em]">버튼 몇 번으로 나만의 여행 계획</h2>
           <p class="text-sm sm:text-base text-[#1E352B]/80 dark:text-[#E6DEC8]/80 max-w-2xl">
-            여행 스타일과 일정을 선택하면 스트레스 지수를 낮춘 추천 일정 초안이 바로 구성됩니다. 복사해서 카카오톡 문의에 붙여넣어 보세요.
+            여행지, 동행, 연령대, 취향과 날짜를 선택하세요. AI가 조건을 반영해 오전·점심·오후·저녁 일정 초안을 작성합니다.
           </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <!-- Left Controls Panel -->
-          <div class="lg:col-span-5 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-5">
+          <form id="travelPlannerForm" class="lg:col-span-5 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-5 sm:p-6 space-y-5" novalidate>
             <div>
-              <label for="destinationSelect" class="block text-sm font-semibold mb-2">여행지 테마 선택</label>
-              <select
-                id="destinationSelect"
-                class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:border-[#1E352B] dark:focus:border-[#EFE9D8] focus:outline-none text-sm"
-              >
-                <option value="jeju">제주 해안 &amp; 오름 활동 코스</option>
-                <option value="gangneung">강릉 솔향기 자전거 &amp; 카페 산책</option>
-                <option value="tokyo">도쿄 시모키타자와·공원 도보 투어</option>
-                <option value="kyoto">교토 카모가와 강변 &amp; 골목 여유 코스</option>
-              </select>
+              <label for="destinationInput" class="block text-sm font-semibold mb-2">여행지</label>
+              <input id="destinationInput" name="destination" type="text" maxlength="90" autocomplete="off"
+                placeholder="예: 오사카, 일본" value="오사카, 일본" list="destinationSuggestions"
+                class="w-full px-3.5 py-2.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 focus:outline-none focus:ring-2 focus:ring-[#698456] text-sm" required />
+              <datalist id="destinationSuggestions">
+                <option value="오사카, 일본"></option><option value="도쿄, 일본"></option><option value="교토, 일본"></option>
+                <option value="제주, 한국"></option><option value="강릉, 한국"></option><option value="삿포로, 일본"></option>
+                <option value="방콕, 태국"></option><option value="타이베이, 대만"></option>
+              </datalist>
             </div>
 
-            <div>
-              <label for="daysRange" class="flex items-center justify-between text-sm font-semibold mb-2">
-                <span>여행 일수</span>
-                <span id="daysValue" class="font-mono-code text-[#A34313] dark:text-[#E07A47]">3일 (2박 3일)</span>
-              </label>
-              <input
-                id="daysRange"
-                type="range"
-                min="2"
-                max="5"
-                value="3"
-                class="w-full accent-[#A34313] cursor-pointer"
-              />
-            </div>
-
-            <div>
-              <span class="block text-sm font-semibold mb-2">선호하는 활동 리듬</span>
-              <div class="grid grid-cols-3 gap-2" id="paceOptions">
-                <button
-                  type="button"
-                  data-pace="산책 중심"
-                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] text-xs font-semibold transition cursor-pointer"
-                >
-                  산책 중심
-                </button>
-                <button
-                  type="button"
-                  data-pace="액티비티"
-                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#E6DEC8] dark:bg-[#1E352B] text-xs font-semibold transition cursor-pointer"
-                >
-                  액티비티
-                </button>
-                <button
-                  type="button"
-                  data-pace="여유 반반"
-                  class="pace-btn px-3 py-2 rounded-[8px] border border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#E6DEC8] dark:bg-[#1E352B] text-xs font-semibold transition cursor-pointer"
-                >
-                  여유 반반
-                </button>
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">성별</legend>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="choice-btn" data-group="gender" data-value="남성">남성</button>
+                <button type="button" class="choice-btn" data-group="gender" data-value="여성">여성</button>
+                <button type="button" class="choice-btn" data-group="gender" data-value="응답 안 함">선택 안 함</button>
               </div>
-            </div>
+            </fieldset>
 
-            <!-- Stress Gauge Progress Bar (#698456 Sage) -->
-            <div class="p-3.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 space-y-2">
-              <div class="flex items-center justify-between text-xs font-mono-code">
-                <span>PLANNING RELAX SCORE</span>
-                <span id="relaxScoreText" class="text-[#698456] dark:text-[#96B87E] font-bold">92% LOW STRESS</span>
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">연령대</legend>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="choice-btn" data-group="age" data-value="10대">10대</button>
+                <button type="button" class="choice-btn" data-group="age" data-value="20대">20대</button>
+                <button type="button" class="choice-btn" data-group="age" data-value="30대">30대</button>
+                <button type="button" class="choice-btn" data-group="age" data-value="40대">40대</button>
+                <button type="button" class="choice-btn" data-group="age" data-value="50대">50대</button>
+                <button type="button" class="choice-btn" data-group="age" data-value="60대 이상">60대 이상</button>
               </div>
-              <div class="w-full h-2.5 rounded-full bg-[#D7CCB0] dark:bg-[#14241D] overflow-hidden">
-                <div id="relaxProgressBar" class="h-full bg-[#698456] transition-all duration-300" style="width: 92%"></div>
+            </fieldset>
+
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">누구와 함께 가시나요?</legend>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="choice-btn" data-group="relationship" data-value="커플">커플</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="가족">가족</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="친구">친구</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="동성 친구">동성 친구</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="단체">단체</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="회사">회사</button>
+                <button type="button" class="choice-btn" data-group="relationship" data-value="혼자">혼자</button>
               </div>
-            </div>
+            </fieldset>
 
-            <div class="flex flex-wrap gap-2.5 pt-1">
-              <button
-                id="generatePlanBtn"
-                type="button"
-                class="flex-1 px-4 py-2.5 rounded-[8px] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B] hover:bg-[#15271F] text-sm font-semibold transition cursor-pointer"
-              >
-                초안 생성하기
-              </button>
-              <button
-                id="copyPlanBtn"
-                type="button"
-                class="px-4 py-2.5 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] text-sm font-semibold hover:bg-[#E6DEC8] dark:hover:bg-[#1E352B] transition cursor-pointer"
-              >
-                요약 복사
-              </button>
-            </div>
-          </div>
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">여행 인원</legend>
+              <div class="grid grid-cols-5 gap-2">
+                <button type="button" class="choice-btn" data-group="people" data-value="1명">1명</button>
+                <button type="button" class="choice-btn" data-group="people" data-value="2명">2명</button>
+                <button type="button" class="choice-btn" data-group="people" data-value="3명">3명</button>
+                <button type="button" class="choice-btn" data-group="people" data-value="4명">4명</button>
+                <button type="button" class="choice-btn" data-group="people" data-value="5명 이상">5명+</button>
+              </div>
+            </fieldset>
 
-          <!-- Right Generated Plan Output -->
-          <div class="lg:col-span-7 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-6 space-y-4 active-card-offset">
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">여행 방향 <span class="font-normal text-xs text-[#1E352B]/70 dark:text-[#E6DEC8]/70">(최대 3개)</span></legend>
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" class="choice-btn" data-style="액티비티">액티비티</button>
+                <button type="button" class="choice-btn" data-style="맛집투어">맛집투어</button>
+                <button type="button" class="choice-btn" data-style="자연경관">자연경관</button>
+                <button type="button" class="choice-btn" data-style="로컬투어">로컬투어</button>
+                <button type="button" class="choice-btn" data-style="문화·역사">문화·역사</button>
+                <button type="button" class="choice-btn" data-style="휴양·힐링">휴양·힐링</button>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-2">
+              <legend class="text-sm font-semibold">여행 일정</legend>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="startDate" class="block text-xs mb-1">출발일</label>
+                  <input id="startDate" type="date" class="w-full min-w-0 rounded-[8px] px-2 py-2.5 bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 text-sm" required />
+                </div>
+                <div>
+                  <label for="endDate" class="block text-xs mb-1">귀국일</label>
+                  <input id="endDate" type="date" class="w-full min-w-0 rounded-[8px] px-2 py-2.5 bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/30 dark:border-[#E6DEC8]/30 text-sm" required />
+                </div>
+              </div>
+              <p id="durationSummary" class="rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] px-3 py-2.5 text-center text-sm font-semibold" aria-live="polite">날짜를 선택하면 여행 기간이 계산됩니다.</p>
+              <p class="text-xs text-[#1E352B]/65 dark:text-[#E6DEC8]/65">당일치기부터 최대 14일까지 선택할 수 있습니다. 모바일에서는 날짜를 누르면 달력이 열립니다.</p>
+            </fieldset>
+
+            <button id="generatePlanBtn" type="submit"
+              class="w-full px-4 py-3 rounded-[8px] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B] hover:bg-[#15271F] dark:hover:bg-white text-sm font-bold transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+              AI 여행 일정 생성하기
+            </button>
+            <p class="text-xs text-[#1E352B]/65 dark:text-[#E6DEC8]/65">일정 초안은 추천안이며, 운영시간·예약 가능 여부·교통편은 예약 전 공식 정보를 확인해야 합니다.</p>
+          </form>
+
+          <div class="lg:col-span-7 rounded-[12px] bg-[#EFE9D8] dark:bg-[#264135] border border-[#1E352B]/20 dark:border-[#E6DEC8]/20 p-5 sm:p-6 space-y-4 active-card-offset" aria-label="AI 여행 일정 결과">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#1E352B]/15 dark:border-[#E6DEC8]/15 pb-3">
               <div>
-                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">GENERATED DRAFT</span>
-                <h3 id="planTitle" class="font-display font-bold text-xl sm:text-2xl mt-0.5">
-                  제주 해안 &amp; 오름 활동 코스 · 3일
-                </h3>
+                <span class="font-mono-code text-xs text-[#7F633F] dark:text-[#E6DEC8]/70">YOUR TRAVEL DRAFT</span>
+                <h3 id="planTitle" class="font-display font-bold text-xl sm:text-2xl mt-0.5">나만의 여행 일정을 만들어 보세요</h3>
               </div>
-              <span id="planBadge" class="px-3 py-1 rounded-[8px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">
-                산책 중심
-              </span>
+              <span id="planBadge" class="px-3 py-1 rounded-[8px] bg-[#A34313] text-[#EFE9D8] text-xs font-semibold">AI 맞춤 초안</span>
             </div>
-
+            <p id="planSummary" class="text-sm text-[#1E352B]/80 dark:text-[#E6DEC8]/80">왼쪽에서 여행 조건을 선택한 뒤 생성 버튼을 눌러 주세요.</p>
+            <div id="planStatus" class="text-xs text-[#A34313] dark:text-[#F09A6C]" role="status" aria-live="polite"></div>
             <div id="planDaysContainer" class="space-y-3">
-              <!-- Populated dynamically via JS -->
+              <p class="rounded-[8px] p-5 text-sm bg-[#E6DEC8] dark:bg-[#1E352B]">여행지와 날짜, 원하는 활동을 선택하면 날짜별 일정이 표시됩니다.</p>
             </div>
-
-            <!-- Callout Banner (#A34313 left accent border) -->
+            <button id="copyPlanBtn" type="button" disabled
+              class="px-4 py-2.5 rounded-[8px] border border-[#1E352B] dark:border-[#E6DEC8] text-sm font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed">
+              일정 복사하기
+            </button>
             <div class="rounded-[8px] border-l-4 border-[#A34313] bg-[#A34313]/10 dark:bg-[#A34313]/20 p-3.5 text-xs sm:text-sm leading-relaxed">
-              <strong class="font-semibold text-[#A34313] dark:text-[#F09A6C]">프로 여행자 팁:</strong>
-              비나 바람이 부는 날에는 야외 코스를 실내 북카페·전시 공간으로 1:1 치환할 수 있도록 여유 시간을 비워 두었습니다.
+              <strong class="font-semibold text-[#A34313] dark:text-[#F09A6C]">정보 검증 안내:</strong>
+              AI는 실시간 영업·휴무·입장권·교통 정보를 직접 조회하지 않습니다. 방문지의 최신 정보는 공식 홈페이지에서 확인하세요.
             </div>
           </div>
         </div>
@@ -924,170 +926,225 @@
         });
       });
 
-      // Itinerary Builder Logic (#planner-lab)
-      const destinationSelect = document.getElementById('destinationSelect');
-      const daysRange = document.getElementById('daysRange');
-      const daysValue = document.getElementById('daysValue');
-      const paceButtons = document.querySelectorAll('.pace-btn');
+
+      // AI itinerary planner: all traveler preferences are used as structured input.
+      const plannerForm = document.getElementById('travelPlannerForm');
+      const destinationInput = document.getElementById('destinationInput');
+      const startDateInput = document.getElementById('startDate');
+      const endDateInput = document.getElementById('endDate');
+      const durationSummary = document.getElementById('durationSummary');
       const generatePlanBtn = document.getElementById('generatePlanBtn');
       const copyPlanBtn = document.getElementById('copyPlanBtn');
       const planTitle = document.getElementById('planTitle');
       const planBadge = document.getElementById('planBadge');
+      const planSummary = document.getElementById('planSummary');
+      const planStatus = document.getElementById('planStatus');
       const planDaysContainer = document.getElementById('planDaysContainer');
-      const relaxScoreText = document.getElementById('relaxScoreText');
-      const relaxProgressBar = document.getElementById('relaxProgressBar');
 
-      let selectedPace = '산책 중심';
+      const selected = { gender: '남성', age: '30대', relationship: '친구', people: '2명' };
+      const selectedStyles = new Set(['액티비티']);
+      const planCache = new Map();
+      let lastPlan = null;
+      let lastPayload = null;
 
-      const routeTemplates = {
-        jeju: {
-          label: '제주 해안 & 오름 활동 코스',
-          items: [
-            '오전: 파스텔 해변 산책 & 로컬 베이커리 커피 · 오후: 완만한 오름 트레킹 & 쉼표 타임',
-            '오전: 동쪽 해안길 자전거/도보 이동 · 오후: 감각적인 편집샵 구경 & 저녁 자유 시간',
-            '오전: 조용한 포구 산책 & 바다 바라보기 · 오후: 공항 이동 전 여유로운 티타임',
-            '오전: 숲길 가벼운 워킹 · 오후: 해안 드라이브 & 노을 스팟 휴식',
-            '오전: 남은 스팟 가볍게 둘러보기 · 오후: 스트레스 없이 귀가 준비',
-          ],
-        },
-        gangneung: {
-          label: '강릉 솔향기 자전거 & 카페 산책',
-          items: [
-            '오전: 솔숲 산책로 호흡 고르기 · 오후: 바다 앞 테라스 휴식 & 산책',
-            '오전: 해안 자전거 코스 주행 · 오후: 로컬 식사 & 골목 여유 탐방',
-            '오전: 아침 바닷가 산책 · 오후: 기념품 산책 후 여유로운 복귀',
-            '오전: 호수 둘레길 걷기 · 오후: 아늑한 공간에서 독서 및 휴식',
-            '오전: 가벼운 산책 마무리 · 오후: 여유로운 일정으로 귀가',
-          ],
-        },
-        tokyo: {
-          label: '도쿄 시모키타자와·공원 도보 투어',
-          items: [
-            '오전: 공원 산책으로 아침 여백 확보 · 오후: 시모키타자와 골목 & 빈티지 샵 산책',
-            '오전: 조용한 주택가 도보 이동 · 오후: 루프탑/카페 휴식 & 저녁 자유 선택',
-            '오전: 가벼운 쇼핑 & 산책 · 오후: 공항 이동 전 여유로운 시간',
-            '오전: 강변 또는 공원 러닝/워킹 · 오후: 감각적인 스팟 1~2곳만 집중 탐방',
-            '오전: 마지막 산책 & 커피 · 오후: 무리 없는 귀국 동선',
-          ],
-        },
-        kyoto: {
-          label: '교토 카모가와 강변 & 골목 여유 코스',
-          items: [
-            '오전: 카모가와 강변 아침 산책 · 오후: 한적한 골목길 도보 & 다과 휴식',
-            '오전: 이른 시간 사찰/정원 산책 · 오후: 자전거 또는 도보로 주변 동네 탐방',
-            '오전: 여유로운 아침 식사 후 산책 · 오후: 편안한 이동 스케줄',
-            '오전: 강변 바람 쐬며 걷기 · 오후: 골목 서점·카페에서 쉼표',
-            '오전: 가벼운 마무리 산책 · 오후: 여유롭게 다음 여정 이동',
-          ],
-        },
-      };
-
-      paceButtons.forEach((btn) => {
-        btn.addEventListener('click', function () {
-          selectedPace = btn.getAttribute('data-pace');
-          paceButtons.forEach((b) => {
-            const isSelected = b === btn;
-            b.classList.toggle('bg-[#1E352B]', isSelected);
-            b.classList.toggle('text-[#E6DEC8]', isSelected);
-            b.classList.toggle('dark:bg-[#EFE9D8]', isSelected);
-            b.classList.toggle('dark:text-[#1E352B]', isSelected);
-            b.classList.toggle('border-[#1E352B]', isSelected);
-            b.classList.toggle('dark:border-[#E6DEC8]', isSelected);
-
-            b.classList.toggle('bg-[#E6DEC8]', !isSelected);
-            b.classList.toggle('dark:bg-[#1E352B]', !isSelected);
-            b.classList.toggle('border-[#1E352B]/25', !isSelected);
-            b.classList.toggle('dark:border-[#E6DEC8]/25', !isSelected);
-          });
-          renderItinerary(false);
-        });
-      });
-
-      daysRange.addEventListener('input', function () {
-        const d = Number(daysRange.value);
-        daysValue.textContent = `${d}일 (${d - 1}박 ${d}일)`;
-        renderItinerary(false);
-      });
-
-      destinationSelect.addEventListener('change', function () {
-        renderItinerary(false);
-      });
-
-      function renderItinerary(notify) {
-        const destKey = destinationSelect.value;
-        const daysCount = Number(daysRange.value);
-        const template = routeTemplates[destKey] || routeTemplates.jeju;
-
-        planTitle.textContent = `${template.label} · ${daysCount}일`;
-        planBadge.textContent = selectedPace;
-
-        // Calculate relax score based on days & pace
-        let score = 92;
-        if (selectedPace === '산책 중심') score = 95;
-        else if (selectedPace === '여유 반반') score = 90;
-        else if (selectedPace === '액티비티') score = 86;
-        if (daysCount >= 4) score = Math.min(98, score + 2);
-
-        relaxScoreText.textContent = `${score}% LOW STRESS`;
-        relaxProgressBar.style.width = `${score}%`;
-
-        planDaysContainer.innerHTML = '';
-        for (let i = 0; i < daysCount; i++) {
-          const desc = template.items[i % template.items.length];
-          const dayCard = document.createElement('div');
-          dayCard.className =
-            'p-3.5 rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4';
-          dayCard.innerHTML = `
-            <span class="font-mono-code text-xs font-bold px-2.5 py-1 rounded-[6px] bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B] shrink-0 self-start sm:self-center">
-              DAY 0${i + 1}
-            </span>
-            <p class="text-xs sm:text-sm leading-relaxed text-[#1E352B] dark:text-[#E6DEC8]">
-              <strong class="font-semibold">[${selectedPace}]</strong> ${desc}
-            </p>
-          `;
-          planDaysContainer.appendChild(dayCard);
-        }
-
-        if (notify) {
-          showToast(`${template.label} (${daysCount}일) 초안을 생성했습니다.`);
-        }
+      const pad = (n) => String(n).padStart(2, '0');
+      function localDateString(date) {
+        return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+      }
+      function countTripDays() {
+        if (!startDateInput.value || !endDateInput.value) return 0;
+        const start = new Date(startDateInput.value + 'T12:00:00');
+        const end = new Date(endDateInput.value + 'T12:00:00');
+        return Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
+      }
+      function syncDuration() {
+        endDateInput.min = startDateInput.value || localDateString(new Date());
+        const count = countTripDays();
+        if (count < 1) durationSummary.textContent = '귀국일은 출발일과 같거나 늦어야 합니다.';
+        else if (count > 14) durationSummary.textContent = '일정은 최대 14일까지 생성할 수 있습니다.';
+        else durationSummary.textContent = (count - 1) + '박 ' + count + '일';
       }
 
-      generatePlanBtn.addEventListener('click', function () {
-        renderItinerary(true);
+      function paintChoice(button, active) {
+        button.setAttribute('aria-pressed', String(active));
+        button.className = 'choice-btn min-h-10 px-2 py-2 rounded-[8px] border text-xs sm:text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A34313] cursor-pointer ' +
+          (active
+            ? 'border-[#1E352B] dark:border-[#EFE9D8] bg-[#1E352B] dark:bg-[#EFE9D8] text-[#E6DEC8] dark:text-[#1E352B]'
+            : 'border-[#1E352B]/25 dark:border-[#E6DEC8]/25 bg-[#E6DEC8] dark:bg-[#1E352B] text-[#1E352B] dark:text-[#E6DEC8] hover:border-[#A34313]');
+      }
+      function refreshChoices() {
+        document.querySelectorAll('[data-group]').forEach((button) => {
+          paintChoice(button, selected[button.dataset.group] === button.dataset.value);
+        });
+        document.querySelectorAll('[data-style]').forEach((button) => {
+          paintChoice(button, selectedStyles.has(button.dataset.style));
+        });
+      }
+      document.querySelectorAll('[data-group]').forEach((button) => {
+        button.addEventListener('click', () => {
+          selected[button.dataset.group] = button.dataset.value;
+          if (button.dataset.group === 'relationship' && button.dataset.value === '혼자') selected.people = '1명';
+          if (button.dataset.group === 'people' && button.dataset.value !== '1명' && selected.relationship === '혼자') selected.relationship = '친구';
+          refreshChoices();
+        });
       });
-
-      // Preset buttons inside Route cards
-      document.querySelectorAll('.preset-load').forEach((btn) => {
-        btn.addEventListener('click', function () {
-          const preset = btn.getAttribute('data-preset');
-          if (preset && routeTemplates[preset]) {
-            destinationSelect.value = preset;
-            renderItinerary(true);
-            document.getElementById('planner-lab').scrollIntoView({ behavior: 'smooth' });
+      document.querySelectorAll('[data-style]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const style = button.dataset.style;
+          if (selectedStyles.has(style)) {
+            if (selectedStyles.size > 1) selectedStyles.delete(style);
+            else showToast('여행 방향은 한 가지 이상 선택해야 합니다.');
+          } else if (selectedStyles.size < 3) {
+            selectedStyles.add(style);
+          } else {
+            showToast('여행 방향은 최대 3개까지 선택할 수 있습니다.');
           }
+          refreshChoices();
         });
       });
 
-      function buildPlainItineraryText() {
-        const destKey = destinationSelect.value;
-        const daysCount = Number(daysRange.value);
-        const template = routeTemplates[destKey] || routeTemplates.jeju;
-        const lines = [
-          `[FreeFLY 무스트레스 여행 초안]`,
-          `여행지: ${template.label} (${daysCount}일)`,
-          `활동 리듬: ${selectedPace}`,
-          ``,
-        ];
-        for (let i = 0; i < daysCount; i++) {
-          lines.push(`DAY 0${i + 1}: ${template.items[i % template.items.length]}`);
+      startDateInput.addEventListener('change', syncDuration);
+      endDateInput.addEventListener('change', syncDuration);
+      const today = new Date();
+      const departure = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 21);
+      const arrival = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 24);
+      startDateInput.min = localDateString(today);
+      startDateInput.value = localDateString(departure);
+      endDateInput.value = localDateString(arrival);
+      syncDuration();
+      refreshChoices();
+
+      function getTripPayload() {
+        return {
+          destination: destinationInput.value.trim(),
+          gender: selected.gender,
+          age: selected.age,
+          relationship: selected.relationship,
+          people: selected.people,
+          styles: Array.from(selectedStyles),
+          startDate: startDateInput.value,
+          endDate: endDateInput.value
+        };
+      }
+      function elt(tag, className, textValue) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (textValue !== undefined) node.textContent = textValue;
+        return node;
+      }
+      function renderPlan(plan, payload) {
+        planTitle.textContent = plan.title || (payload.destination + ' 맞춤 여행 일정');
+        planBadge.textContent = (countTripDays() - 1) + '박 ' + countTripDays() + '일';
+        planSummary.textContent = plan.summary || (payload.relationship + ' · ' + payload.styles.join(' · '));
+        planDaysContainer.replaceChildren();
+        const slots = [['오전', 'morning'], ['점심', 'lunch'], ['오후', 'afternoon'], ['저녁', 'evening']];
+        plan.days.forEach((day, index) => {
+          const card = elt('article', 'rounded-[8px] bg-[#E6DEC8] dark:bg-[#1E352B] border border-[#1E352B]/15 dark:border-[#E6DEC8]/15 p-4 space-y-3');
+          const header = elt('div', 'flex flex-wrap items-center gap-2');
+          header.appendChild(elt('span', 'font-mono-code text-xs font-bold px-2.5 py-1 rounded-[6px] bg-[#1E352B] text-[#E6DEC8] dark:bg-[#EFE9D8] dark:text-[#1E352B]', 'DAY ' + pad(index + 1)));
+          header.appendChild(elt('h4', 'text-sm font-bold', (day.date || '') + ' · ' + (day.label || '추천 여행')));
+          card.appendChild(header);
+          const list = elt('dl', 'grid grid-cols-1 gap-2');
+          slots.forEach((slot) => {
+            const row = elt('div', 'grid grid-cols-[42px_minmax(0,1fr)] gap-2 text-xs sm:text-sm');
+            row.appendChild(elt('dt', 'font-semibold text-[#A34313] dark:text-[#F09A6C]', slot[0]));
+            row.appendChild(elt('dd', 'leading-relaxed', day[slot[1]] || '자유 시간'));
+            list.appendChild(row);
+          });
+          card.appendChild(list);
+          if (day.notes) card.appendChild(elt('p', 'text-xs text-[#1E352B]/65 dark:text-[#E6DEC8]/65 border-t border-[#1E352B]/10 dark:border-[#E6DEC8]/10 pt-2', '동선·예약 메모: ' + day.notes));
+          planDaysContainer.appendChild(card);
+        });
+        if (plan.verificationNotice) {
+          planDaysContainer.appendChild(elt('p', 'text-xs text-[#A34313] dark:text-[#F09A6C]', plan.verificationNotice));
         }
-        lines.push(``, `문의: 카카오톡 / 010-0000-1234`);
-        return lines.join('\n');
+        copyPlanBtn.disabled = false;
       }
 
-      copyPlanBtn.addEventListener('click', function () {
-        copyTextToClipboard(buildPlainItineraryText(), '여행 초안이 클립보드에 복사되었습니다.');
+      plannerForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const payload = getTripPayload();
+        const days = countTripDays();
+        if (!payload.destination) {
+          showToast('여행지를 입력해 주세요.');
+          destinationInput.focus();
+          return;
+        }
+        if (!payload.startDate || !payload.endDate || days < 1 || days > 14) {
+          showToast('여행 날짜를 확인해 주세요. 최대 14일까지 가능합니다.');
+          return;
+        }
+        generatePlanBtn.disabled = true;
+        generatePlanBtn.textContent = 'AI가 여행 일정을 작성하고 있습니다…';
+        planStatus.textContent = '일정 생성 중입니다. 관광지 영업시간과 예약 여부는 추후 확인이 필요합니다.';
+        copyPlanBtn.disabled = true;
+        try {
+          const cacheKey = JSON.stringify(payload);
+          let plan = planCache.get(cacheKey);
+          if (!plan) {
+            const response = await fetch('/api/generate-itinerary', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            let result = {};
+            try { result = await response.json(); } catch (error) { /* Non-JSON error response */ }
+            if (!response.ok) throw new Error(result.error || 'AI 서버에 연결할 수 없습니다. 서버 설정을 확인해 주세요.');
+            plan = result.plan;
+            if (!plan || !Array.isArray(plan.days) || plan.days.length !== days) {
+              throw new Error('일정 결과 형식이 올바르지 않습니다. 다시 시도해 주세요.');
+            }
+            planCache.set(cacheKey, plan);
+          }
+          lastPlan = plan;
+          lastPayload = payload;
+          renderPlan(plan, payload);
+          planStatus.textContent = 'AI 일정 초안입니다. 실제 운영시간·요금·예약 가능 여부는 미확인 상태입니다.';
+          showToast('맞춤 여행 일정 초안이 생성되었습니다.');
+        } catch (error) {
+          planStatus.textContent = (error && error.message) || '일정 생성에 실패했습니다.';
+          showToast('AI 일정 생성에 실패했습니다. 설정과 연결 상태를 확인해 주세요.');
+          copyPlanBtn.disabled = !lastPlan;
+        } finally {
+          generatePlanBtn.disabled = false;
+          generatePlanBtn.textContent = 'AI 여행 일정 생성하기';
+        }
+      });
+
+      // Existing recommended route cards now prefill the destination field.
+      const presetDestinations = { jeju: '제주, 한국', gangneung: '강릉, 한국', tokyo: '도쿄, 일본', kyoto: '교토, 일본' };
+      document.querySelectorAll('.preset-load').forEach((button) => {
+        button.addEventListener('click', () => {
+          const value = presetDestinations[button.getAttribute('data-preset')];
+          if (!value) return;
+          destinationInput.value = value;
+          document.getElementById('planner-lab').scrollIntoView({ behavior: 'smooth' });
+          showToast('여행지를 적용했습니다. 나머지 조건을 선택해 주세요.');
+        });
+      });
+
+      copyPlanBtn.addEventListener('click', () => {
+        if (!lastPlan || !lastPayload) return;
+        const lines = [
+          '[FreeFLY AI 여행 일정 초안]',
+          '여행지: ' + lastPayload.destination,
+          '여행 기간: ' + lastPayload.startDate + ' ~ ' + lastPayload.endDate,
+          '동행: ' + lastPayload.relationship + ' / ' + lastPayload.people,
+          '취향: ' + lastPayload.styles.join(', '),
+          lastPlan.summary || '',
+          ''
+        ];
+        lastPlan.days.forEach((day, index) => {
+          lines.push('DAY ' + (index + 1) + ' · ' + (day.date || '') + ' ' + (day.label || ''));
+          lines.push('오전: ' + (day.morning || ''));
+          lines.push('점심: ' + (day.lunch || ''));
+          lines.push('오후: ' + (day.afternoon || ''));
+          lines.push('저녁: ' + (day.evening || ''));
+          if (day.notes) lines.push('메모: ' + day.notes);
+          lines.push('');
+        });
+        lines.push('※ 운영시간·요금·교통편·예약 가능 여부는 공식 채널에서 확인하세요.');
+        copyTextToClipboard(lines.join('\n'), 'AI 여행 일정이 복사되었습니다.');
       });
 
       // Phone Number Copy & Kakao Form
@@ -1118,8 +1175,6 @@
         );
       });
 
-      // Initial Render
-      renderItinerary(false);
     })();
   </script>
 </body>
